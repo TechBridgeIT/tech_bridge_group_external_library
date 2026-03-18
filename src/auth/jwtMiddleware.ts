@@ -23,8 +23,6 @@ function verifyAccessToken(token: string, secret: string): JwtPayload {
     return jwt.verify(token, secret) as JwtPayload;
 }
 
-// 👇 FACTORY
-
 export function JwtAuthMiddleware(secret: string): RequestHandler {
     return (req, res, next) => {
         try {
