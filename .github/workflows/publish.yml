@@ -10,38 +10,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
+      # Step 1: Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Optional debug: check secret length
-      - name: Check secret length
-        run: |
-          echo "Secret length: ${#TECHBRIDGEGROUP_ACCESS_TOKEN}"
-        env:
-          TECHBRIDGEGROUP_ACCESS_TOKEN: ${{ secrets.TECHBRIDGEGROUP_ACCESS_TOKEN }}
-
-      # Step 3: Set up Node.js and authenticate to GitHub Packages
-      - name: Set up Node.js and npm auth
+      # Step 2: Setup Node.js and authenticate
+      - name: Setup Node.js and npm auth
         uses: actions/setup-node@v3
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
-          scope: '@gim2510'                     # must match the package scope
+          scope: '@gim2510'
           token: ${{ secrets.TECHBRIDGEGROUP_ACCESS_TOKEN }}
 
-      # Step 4: Install dependencies
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step 5: Build the package
+      # Step 4: Build package
       - name: Build package
         run: npm run build
 
-      # Step 6: Optional debug: verify npm auth
-      - name: Verify npm authentication
+      # Step 5: Optional debug npm auth
+      - name: Debug npm auth
         run: npm whoami
 
-      # Step 7: Publish package
+      # Step 6: Publish
       - name: Publish package
         run: npm publish
