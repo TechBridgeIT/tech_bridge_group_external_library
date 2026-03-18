@@ -18,8 +18,9 @@ jobs:
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
-          scope: '@gim2510'
-          token: ${{ secrets.TECHBRIDGEGROUP_ACCESS_TOKEN }}
+
+      - name: Authenticate to GitHub Packages
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.TECHBRIDGEGROUP_ACCESS_TOKEN }}" > ~/.npmrc
 
       - name: Install dependencies
         run: npm install
@@ -27,11 +28,5 @@ jobs:
       - name: Build package
         run: npm run build
 
-      # Debug: mostra la configurazione npm nella cartella del progetto
-      - name: Show npmrc
-        run: cat .npmrc
-
       - name: Publish package
-        run: npm publish --verbose
-        env:
-          NPM_CONFIG_LOGLEVEL: verbose
+        run: npm publish
