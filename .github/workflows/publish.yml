@@ -22,6 +22,8 @@ jobs:
       - run: npm run build
 
       # debug
+      - run: npm config set @gim2510:registry https://npm.pkg.github.com/
+
       - run: npm whoami
         env:
           NODE_AUTH_TOKEN: ${{ secrets.TECHBRIDGEGROUP_ACCESS_TOKEN }}
