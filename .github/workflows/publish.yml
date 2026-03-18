@@ -20,7 +20,12 @@ jobs:
           registry-url: https://npm.pkg.github.com/
 
       - name: Authenticate to GitHub Packages
-        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.TECHBRIDGEGROUP_ACCESS_TOKEN }}" > ~/.npmrc
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com/
+          scope: '@gim2510'
+          auth-token: ${{ secrets.TECHBRIDGEGROUP_ACCESS_TOKEN }}
 
       - name: Install dependencies
         run: npm install
