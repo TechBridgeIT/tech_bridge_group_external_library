@@ -10,32 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout del repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2️⃣ Configura Node.js e autenticazione GitHub Packages
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
           scope: '@gim2510'
-          auth-token: ${{ secrets.TECHBRIDGEGROUP_ACCESS_TOKEN }}
+          token: ${{ secrets.TECHBRIDGEGROUP_ACCESS_TOKEN }}
 
-      # 3️⃣ Installa le dipendenze
       - name: Install dependencies
         run: npm install
 
-      # 4️⃣ Compila il pacchetto
       - name: Build package
         run: npm run build
 
-      # 5️⃣ Mostra il contenuto di .npmrc in modo sicuro (token nascosto)
-      - name: Check npm config (safe)
-        run: grep "_authToken" ~/.npmrc | sed 's/:_authToken=.*/:_authToken=****/'
+      # Debug: mostra la configurazione npm nella cartella del progetto
+      - name: Show npmrc
+        run: cat .npmrc
 
-      # 6️⃣ Pubblica il pacchetto con log dettagliati
       - name: Publish package
         run: npm publish --verbose
         env:
