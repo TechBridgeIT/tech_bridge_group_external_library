@@ -10,23 +10,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      # Step 2: Setup Node.js + authenticate with GitHub Packages
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20
-          registry-url: https://npm.pkg.github.com/
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@gim2510'
+          token: ${{ secrets.TECHBRIDGEGROUP_ACCESS_TOKEN }}
 
-      - name: Authenticate to GitHub Packages
-        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.TECHBRIDGEGROUP_ACCESS_TOKEN }}" > ~/.npmrc
+      # Step 3: Optional debug: check npm auth
+      - name: Debug npm authentication
+        run: npm whoami || echo "Not logged in (this step is for debug)"
 
+      # Step 4: Install dependencies
       - name: Install dependencies
         run: npm install
 
+      # Step 5: Build package
       - name: Build package
         run: npm run build
 
+      # Step 6: Publish package
       - name: Publish package
-        run: npm publish
+        run: npm publish --access public
