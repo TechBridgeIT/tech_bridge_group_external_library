@@ -24,7 +24,7 @@ function verifyAccessToken(token: string, secret: string): JwtPayload {
     return jwt.verify(token, secret) as JwtPayload;
 }
 
-export function JwtAuthMiddleware(secret: string): RequestHandler {
+export function jwtAuthMiddleware(secret: string): RequestHandler {
     return (req, res, next) => {
         try {
             const token = extractBearer(req);

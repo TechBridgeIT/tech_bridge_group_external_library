@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { verifyAccessToken, tryExtractBearer } from "./utils";
 import { AuthUser } from "./types";
 
-export function createOptionalJwtMiddleware(secret: string): RequestHandler {
+export function optionalJwtMiddleware(secret: string): RequestHandler {
     return (req, _res, next) => {
         try {
             const token = tryExtractBearer(req);
