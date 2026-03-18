@@ -1,0 +1,25 @@
+{
+  "name": "@gim2510/tech_bridge_group_external",
+  "version": "0.0.1",
+  "description": "external package for techbridgegroup services",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "express-rate-limit": "^7.0.0",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "typescript": "^5.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
