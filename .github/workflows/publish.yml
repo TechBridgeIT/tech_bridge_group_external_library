@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Check secret length
-        run:
+        run: |
           echo "Secret length: ${#TECHBRIDGEGROUP_ACCESS_TOKEN}"
         env:
           TECHBRIDGEGROUP_ACCESS_TOKEN: ${{ secrets.TECHBRIDGEGROUP_ACCESS_TOKEN }}
