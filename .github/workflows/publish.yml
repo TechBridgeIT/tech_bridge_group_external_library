@@ -14,39 +14,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout del codice
       - uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node.js e registry
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
-
-      # 3️⃣ Configura l'autenticazione npm nel .npmrc temporaneo
-      - name: Configure npm auth
-        run: |
-          echo "@TechBridgeIT:registry=https://npm.pkg.github.com/" >> $NPM_CONFIG_USERCONFIG
-          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> $NPM_CONFIG_USERCONFIG
+          scope: '@TechBridgeIT'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 4️⃣ Installa le dipendenze
-      - name: Install dependencies
-        run: npm install
+      - run: npm install
 
-      # 5️⃣ Build del pacchetto
-      - name: Build package
-        run: npm run build
+      - run: npm run build
 
-      # 6️⃣ Verifica login (opzionale, utile per debug)
-      - name: Debug whoami
-        run: npm whoami
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm whoami  # ora funziona senza errori
 
-      # 7️⃣ Pubblica il pacchetto
-      - name: Publish package
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm publish
