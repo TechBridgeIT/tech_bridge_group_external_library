@@ -3,7 +3,7 @@ import { JwtPayload, AuthUser } from "./types";
 import * as jwt from "jsonwebtoken";
 
 
-// T
+// TR
 function extractBearer(req: Request): string {
     const authHeader = req.headers.authorization;
 
