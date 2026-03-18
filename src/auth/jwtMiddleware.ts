@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, RequestHandler } from "express";
+import { Request, RequestHandler } from "express";
 import { JwtPayload, AuthUser } from "./types";
 import * as jwt from "jsonwebtoken";
 
@@ -25,7 +25,7 @@ function verifyAccessToken(token: string, secret: string): JwtPayload {
 
 // 👇 FACTORY
 
-export function createJwtAuthMiddleware(secret: string): RequestHandler {
+export function JwtAuthMiddleware(secret: string): RequestHandler {
     return (req, res, next) => {
         try {
             const token = extractBearer(req);
