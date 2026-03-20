@@ -1,6 +1,6 @@
 {
   "name": "@techbridgeit/tech_bridge_group_external_library",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "external package for techbridgegroup services",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,7 +13,8 @@
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.10",
     "express-rate-limit": "^7.0.0",
-    "jsonwebtoken": "^9.0.3"
+    "jsonwebtoken": "^9.0.3",
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",

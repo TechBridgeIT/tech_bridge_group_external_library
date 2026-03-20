@@ -1,6 +1,12 @@
 import { Request, RequestHandler } from "express";
 import { JwtPayload, AuthUser } from "./types";
 import * as jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+let jwt_key = process.env.JWT_SECRET
+
 
 
 // TR
@@ -24,11 +30,14 @@ function verifyAccessToken(token: string, secret: string): JwtPayload {
     return jwt.verify(token, secret) as JwtPayload;
 }
 
-export function jwtAuthMiddleware(secret: string): RequestHandler {
+export function jwtAuthMiddleware(): RequestHandler {
     return (req, res, next) => {
         try {
             const token = extractBearer(req);
-            const payload = verifyAccessToken(token, secret);
+            if(!jwt_key) {
+                throw new Error("Missing JWT_SECRET");
+            }
+            const payload = verifyAccessToken(token, jwt_key);
 
             const user: AuthUser = {
                 id: payload.sub,

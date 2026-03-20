@@ -1,14 +1,22 @@
 import { RequestHandler } from "express";
 import { verifyAccessToken, tryExtractBearer } from "./utils";
 import { AuthUser } from "./types";
+import dotenv from "dotenv";
 
-export function optionalJwtMiddleware(secret: string): RequestHandler {
+dotenv.config();
+
+let jwt_key = process.env.JWT_SECRET
+
+export function optionalJwtMiddleware(): RequestHandler {
     return (req, _res, next) => {
         try {
             const token = tryExtractBearer(req);
             if (!token) return next();
+            if(!jwt_key) {
+                throw new Error("Missing JWT_SECRET");
+            }
 
-            const payload = verifyAccessToken(token, secret);
+            const payload = verifyAccessToken(token, jwt_key);
 
             const user: AuthUser = {
                 id: payload.sub,
