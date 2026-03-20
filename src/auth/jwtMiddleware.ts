@@ -1,11 +1,15 @@
 import { Request, RequestHandler } from "express";
-import { JwtPayload, AuthUser } from "./types";
+import { JwtPayload } from "./types";
 import * as jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-let jwt_key = process.env.JWT_SECRET
+function getJwtKey(): string {
+    const key = process.env.JWT_SECRET;
+    if (!key) throw new Error("Missing JWT_SECRET");
+    return key;
+}
 
 
 
@@ -32,24 +36,31 @@ function verifyAccessToken(token: string, secret: string): JwtPayload {
 
 export function jwtAuthMiddleware(): RequestHandler {
     return (req, res, next) => {
+        // ✅ bypass preflight
+        if (req.method === "OPTIONS") {
+            return next();
+        }
+
         try {
             const token = extractBearer(req);
-            if(!jwt_key) {
+
+            if (!getJwtKey()) {
                 throw new Error("Missing JWT_SECRET");
             }
-            const payload = verifyAccessToken(token, jwt_key);
 
-            const user: AuthUser = {
+            const payload = verifyAccessToken(token, getJwtKey());
+
+            req.user = {
                 id: payload.sub,
                 role: payload.role,
                 emailVer: payload.emailVer,
             };
 
-            req.user = user;
             req.token = token;
 
             next();
-        } catch {
+        } catch (err) {
+            console.log("JWT ERROR:", err);
             res.status(401).json({ message: "Unauthorized" });
         }
     };
